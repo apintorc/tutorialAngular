@@ -1,7 +1,7 @@
 <div class="container">
     <h1 *ngIf="client.id == null">Crear cliente</h1>
     <h1 *ngIf="client.id != null">Modificar cliente</h1>
-
+    <span>{{error}}</span>
     <form>
         <mat-form-field>
             <mat-label>Identificador</mat-label>
@@ -18,5 +18,6 @@
     <div class="buttons">
         <button mat-stroked-button (click)="onClose()">Cerrar</button>
         <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+        
     </div>
 </div>

@@ -10,7 +10,7 @@ import { Client } from '../model/Client';
   styleUrls: ['./client-edit.component.scss']
 })
 export class ClientEditComponent implements OnInit {
-
+  error = '';
   client : Client;
 
   constructor(
@@ -32,7 +32,12 @@ export class ClientEditComponent implements OnInit {
   onSave() {
     this.clientService.saveClient(this.client).subscribe(result => {
       this.dialogRef.close();
-    });    
+    },
+    err => {
+      this.error = "El nombre introducido ya existe en la base de datos, escoge otro."
+    });
+
+    
   }  
 
   onClose() {

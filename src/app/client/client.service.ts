@@ -20,7 +20,6 @@ export class ClientService {
   saveClient(client: Client): Observable<Client> {
     let url = 'http://localhost:8080/client';
     if (client.id != null) url += '/'+client.id;
-
     return this.http.put<Client>(url, client);
   }
 
