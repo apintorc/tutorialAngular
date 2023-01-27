@@ -9,7 +9,7 @@ import { CategoryModule } from './category/category.module';
 import { AuthorModule } from './author/author.module';
 import { GameModule } from './game/game.module';
 import { ClientModule } from './client/client.module';
-
+import { PrestamoModule } from './prestamo/prestamo.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { ClientModule } from './client/client.module';
     AuthorModule,
     GameModule,
     ClientModule,
+    PrestamoModule,
     BrowserAnimationsModule
   ],
   providers: [],
