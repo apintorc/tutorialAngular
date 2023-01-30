@@ -7,6 +7,10 @@ import { DialogConfirmationComponent } from 'src/app/core/dialog-confirmation/di
 import { Pageable } from 'src/app/core/model/page/Pageable';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
+import { Game } from 'src/app/game/model/Game';
+import { Client } from 'src/app/client/model/Client';
+import { GameService } from 'src/app/game/game.service';
+import { ClientService } from 'src/app/client/client.service';
 @Component({
   selector: 'app-prestamo-list',
   templateUrl: './prestamo-list.component.html',
@@ -14,15 +18,23 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class PrestamoListComponent {
   //prestamos: Prestamo[];
+  games : Game[];
+  clients: Client[];
   pageNumber: number = 0;
   pageSize: number = 5;
   totalElements: number = 0;
   dataSource = new MatTableDataSource<Prestamo>();
   displayedColumns: string[] = ['id', 'namegame', 'nameclient', 'fechainicio', 'fechafin', 'action'];
+  filterGame: Game;
+  filterClient: Client;
+  filterFechaInicio: Date;
+  filterFechaFin: Date;
 
   constructor(
     private prestamoService: PrestamoService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private clientService: ClientService,
+    private gameService: GameService
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +57,14 @@ export class PrestamoListComponent {
         pageable.pageNumber = event.pageIndex;
     }
 
+    this.gameService.getGames().subscribe(
+      games => this.games = games
+    );
+
+    this.clientService.getClients().subscribe(
+      clients => this.clients = clients
+    );
+
     this.prestamoService.getPrestamos(pageable).subscribe(data => {
         this.dataSource.data = data.content;
         this.pageNumber = data.pageable.pageNumber;
@@ -55,6 +75,36 @@ export class PrestamoListComponent {
 
 
 }  
+
+onCleanFilter(): void {
+  this.filterGame = null;
+  this.filterClient = null;
+  this.filterFechaInicio = null;
+  this.filterFechaFin = null;
+
+  this.onSearch();
+}
+
+onSearch(): void {
+  let pageable : Pageable =  {
+    pageNumber: this.pageNumber,
+    pageSize: this.pageSize,
+    sort: [{
+        property: 'id',
+        direction: 'ASC'
+    }]
+}
+  let gameId = this.filterGame != null ? this.filterGame.id : null;
+  let clientId = this.filterClient != null ? this.filterClient.id : null;
+  let fecha_inicio = this.filterFechaInicio;
+  let fecha_fin = this.filterFechaFin;
+
+  this.prestamoService.getPrestamos(pageable, gameId, clientId, fecha_inicio, fecha_fin).subscribe(data => {
+      this.dataSource.data = data.content;
+      prestamos => this.dataSource.data = prestamos;
+    });
+}
+
 
   createPrestamo() {    
     const dialogRef = this.dialog.open(PrestamoNewComponent, {

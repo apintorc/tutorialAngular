@@ -1,6 +1,40 @@
 <div class="container">
     <h1>Listado de Préstamos</h1>
 
+    <div class="filters">
+        <form>
+            <mat-form-field>
+                <mat-label>Título del juego</mat-label>
+                <mat-select disableRipple [(ngModel)]="filterGame" name="game">
+                    <mat-option *ngFor="let game of games" [value]="game">{{game.title}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Nombre del cliente</mat-label>
+                <mat-select disableRipple [(ngModel)]="filterClient" name="client">
+                    <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>   
+            
+            <mat-form-field>
+                <mat-label>Fecha Inicio</mat-label>
+                <input type="date" matInput placeholder="Inicio del préstamo" [(ngModel)]="filterFechaInicio" name="fecha_inicio">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Fecha Fin</mat-label>
+                <input type="date" matInput placeholder="Fin del préstamo" [(ngModel)]="filterFechaFin" name="fecha_fin">
+            </mat-form-field>
+
+        </form>
+
+        <div class="buttons">
+            <button mat-stroked-button (click)="onCleanFilter()">Limpiar</button> 
+            <button mat-stroked-button (click)="onSearch()">Filtrar</button> 
+        </div>   
+    </div>   
+
     <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="id">
             <mat-header-cell *matHeaderCellDef> Identificador </mat-header-cell>
@@ -11,12 +45,12 @@
 
         <ng-container matColumnDef="namegame">
             <mat-header-cell *matHeaderCellDef> Nombre del juego  </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.juego.title}} </mat-cell>
+            <mat-cell *matCellDef="let element">{{element.game.title}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="nameclient">
             <mat-header-cell *matHeaderCellDef> Nombre del cliente  </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.cliente.name}} </mat-cell>
+            <mat-cell *matCellDef="let element">{{element.client.name}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="fechainicio">
