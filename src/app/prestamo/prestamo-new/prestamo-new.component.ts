@@ -16,8 +16,8 @@ import { Game } from 'src/app/game/model/Game';
 export class PrestamoNewComponent implements OnInit {
 
     prestamo: Prestamo; 
-    clientes: Client[];
-    juegos: Game[];
+    clients: Client[];
+    games: Game[];
 
     constructor(
         public dialogRef: MatDialogRef<PrestamoNewComponent>,
@@ -31,26 +31,26 @@ export class PrestamoNewComponent implements OnInit {
       this.prestamo = new Prestamo();
 
         this.clientService.getClients().subscribe(
-            clientes => {
-                this.clientes = clientes;
+            clients => {
+                this.clients = clients;
 
-                if (this.prestamo.cliente != null) {
-                    let clientFilter: Client[] = clientes.filter(client => client.id == this.data.prestamo.cliente.id);
+                if (this.prestamo.client != null) {
+                    let clientFilter: Client[] = clients.filter(client => client.id == this.data.prestamo.cliente.id);
                     if (clientFilter != null) {
-                        this.prestamo.cliente = clientFilter[0];
+                        this.prestamo.client = clientFilter[0];
                     }
                 }
             }
         );
 
         this.gameService.getGames().subscribe(
-          juegos => {
-              this.juegos = juegos;
+          games => {
+              this.games = games;
 
-              if (this.prestamo.juego != null) {
-                  let gameFilter: Game[] = juegos.filter(game => game.id == this.data.prestamo.juego.id);
+              if (this.prestamo.game != null) {
+                  let gameFilter: Game[] = games.filter(game => game.id == this.data.prestamo.juego.id);
                   if (gameFilter != null) {
-                      this.prestamo.juego = gameFilter[0];
+                      this.prestamo.game = gameFilter[0];
                   }
               }
           }

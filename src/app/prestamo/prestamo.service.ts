@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Prestamo } from './model/Prestamo';
 import { Pageable } from '../core/model/page/Pageable';
-import { PRESTAMO_DATA } from './model/mock-prestamos';
+// import { PRESTAMO_DATA } from './model/mock-prestamos';
 import { PrestamoPage } from './model/PrestamoPage';
 
 
@@ -18,25 +18,21 @@ export class PrestamoService {
   ) { }
 
 
-  getPrestamos(pageable: Pageable, idGame?: number, clientId?: number, fecha_inicio?: Date, fecha_fin?: Date): Observable<PrestamoPage> {
+  getPrestamos(pageable: Pageable, idGame?: number, clientId?: number, fechaInicio?: Date, fechaFin?: Date): Observable<PrestamoPage> {
     //return of(PRESTAMO_DATA);
     //return this.http.post<AuthorPage>('http://localhost:8080/author', {pageable:pageable});
-    return this.http.post<PrestamoPage>(this.composeFindUrl(idGame, clientId, fecha_inicio, fecha_fin),{pageable:pageable});
+    return this.http.post<PrestamoPage>(this.composeFindUrl(idGame, clientId, fechaInicio, fechaFin),{pageable:pageable});
   }
 
   savePrestamo(prestamo: Prestamo): Observable<void> {
-    let url = 'http://localhost:8080/game';
-
-    if (prestamo.id != null) {
-        url += '/'+prestamo.id;
-    }
-
+    let url = 'http://localhost:8080/prestamo/';
     return this.http.put<void>(url, prestamo);
   }
 
 
-  deletePrestamo(idAPrestamo : number): Observable<Prestamo[]> {
-    return of(null);
+  deletePrestamo(idPrestamo : number): Observable<any> {
+    let url = 'http://localhost:8080/prestamo/';
+    return this.http.delete<void>(url+idPrestamo);
   }
 
   // getAllPrestamos(): Observable<Prestamo[]> {
@@ -44,7 +40,7 @@ export class PrestamoService {
   // }
 
   
-  private composeFindUrl(gameId?: number, clientId?: number, fecha_inicio?: Date, fecha_fin?: Date) : string {
+  private composeFindUrl(gameId?: number, clientId?: number, fechaInicio?: Date, fechaFin?: Date) : string {
     let params = '';
 
     if (gameId != null) {
@@ -58,14 +54,14 @@ export class PrestamoService {
         params += "clientId="+clientId;
     }
 
-    if (fecha_inicio != null) {
+    if (fechaInicio != null) {
       if (params != '') params += "&";
-      params += "fecha_inicio="+fecha_inicio;
+      params += "fechaInicio="+fechaInicio;
     }
 
-    if (fecha_fin != null) {
+    if (fechaFin != null) {
       if (params != '') params += "&";
-      params += "fecha_fin="+fecha_fin;
+      params += "fechaFin="+fechaFin;
     }
   
 

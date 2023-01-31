@@ -9,29 +9,29 @@
 
         <mat-form-field>
             <mat-label>Nombre del juego</mat-label>
-            <mat-select disableRipple [(ngModel)]="prestamo.juego" name="juego" required>
-                <mat-option *ngFor="let juego of juegos" [value]="juego">{{juego.title}}</mat-option>
+            <mat-select disableRipple [(ngModel)]="prestamo.game" name="game" required>
+                <mat-option *ngFor="let game of games" [value]="game">{{game.title}}</mat-option>
             </mat-select>
             <mat-error>El nombre del juego no puede estar vacío</mat-error>
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Nombre del cliente</mat-label>
-            <mat-select disableRipple [(ngModel)]="prestamo.cliente" name="cliente" required>
-                <mat-option *ngFor="let cliente of clientes" [value]="cliente">{{cliente.name}}</mat-option>
+            <mat-select disableRipple [(ngModel)]="prestamo.client" name="client" required>
+                <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
             </mat-select>
             <mat-error>El nombre del cliente no puede estar vacío</mat-error>
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Fecha de inicio</mat-label>
-            <input type="date" matInput placeholder="Fecha de inicio" [(ngModel)]="prestamo.fecha_inicio" name="fecha_inicio" required>
+            <input type="date" matInput placeholder="Fecha de inicio" [(ngModel)]="prestamo.fechaInicio" name="fechaInicio" required>
             <mat-error>La fecha de inicio del préstamo no puede estar vacía</mat-error>
         </mat-form-field>
 
         <mat-form-field>
             <mat-label>Fecha de fin</mat-label>
-            <input type="date" matInput placeholder="Fecha de fin" [(ngModel)]="prestamo.fecha_fin" name="fecha_fin" required>
+            <input type="date" matInput placeholder="Fecha de fin" [(ngModel)]="prestamo.fechaFin" name="fechaFin" required>
             <mat-error>La fecha de fin del préstamo no puede estar vacía</mat-error>
         </mat-form-field>
     </form>

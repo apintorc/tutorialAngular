@@ -24,7 +24,7 @@ export class PrestamoListComponent {
   pageSize: number = 5;
   totalElements: number = 0;
   dataSource = new MatTableDataSource<Prestamo>();
-  displayedColumns: string[] = ['id', 'namegame', 'nameclient', 'fechainicio', 'fechafin', 'action'];
+  displayedColumns: string[] = ['id', 'namegame', 'nameclient', 'fechaInicio', 'fechaFin', 'action'];
   filterGame: Game;
   filterClient: Client;
   filterFechaInicio: Date;
@@ -86,6 +86,11 @@ onCleanFilter(): void {
 }
 
 onSearch(): void {
+  
+  let gameId = this.filterGame != null ? this.filterGame.id : null;
+  let clientId = this.filterClient != null ? this.filterClient.id : null;
+  let fechaInicio = this.filterFechaInicio;
+  let fechaFin = this.filterFechaFin;
   let pageable : Pageable =  {
     pageNumber: this.pageNumber,
     pageSize: this.pageSize,
@@ -93,15 +98,14 @@ onSearch(): void {
         property: 'id',
         direction: 'ASC'
     }]
-}
-  let gameId = this.filterGame != null ? this.filterGame.id : null;
-  let clientId = this.filterClient != null ? this.filterClient.id : null;
-  let fecha_inicio = this.filterFechaInicio;
-  let fecha_fin = this.filterFechaFin;
+  }
 
-  this.prestamoService.getPrestamos(pageable, gameId, clientId, fecha_inicio, fecha_fin).subscribe(data => {
+
+  this.prestamoService.getPrestamos(pageable, gameId, clientId, fechaInicio, fechaFin).subscribe(data => {
       this.dataSource.data = data.content;
-      prestamos => this.dataSource.data = prestamos;
+      this.pageNumber = data.pageable.pageNumber;
+      this.pageSize = data.pageable.pageSize;
+      this.totalElements = data.totalElements;
     });
 }
 
