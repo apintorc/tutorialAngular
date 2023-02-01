@@ -17,7 +17,6 @@ import { ClientService } from 'src/app/client/client.service';
   styleUrls: ['./prestamo-list.component.scss']
 })
 export class PrestamoListComponent {
-  //prestamos: Prestamo[];
   games : Game[];
   clients: Client[];
   pageNumber: number = 0;
@@ -38,11 +37,17 @@ export class PrestamoListComponent {
   ) { }
 
   ngOnInit(): void {
+    this.gameService.getGames().subscribe(
+      games => this.games = games
+    );
+
+    this.clientService.getClients().subscribe(
+        clients => this.clients = clients
+    );
     this.loadPage();
   }
 
   loadPage(event?: PageEvent) {
-
     let pageable : Pageable =  {
         pageNumber: this.pageNumber,
         pageSize: this.pageSize,
@@ -56,25 +61,15 @@ export class PrestamoListComponent {
         pageable.pageSize = event.pageSize
         pageable.pageNumber = event.pageIndex;
     }
-
-    this.gameService.getGames().subscribe(
-      games => this.games = games
-    );
-
-    this.clientService.getClients().subscribe(
-      clients => this.clients = clients
-    );
-
+    
     this.prestamoService.getPrestamos(pageable).subscribe(data => {
         this.dataSource.data = data.content;
         this.pageNumber = data.pageable.pageNumber;
         this.pageSize = data.pageable.pageSize;
         this.totalElements = data.totalElements;
-        prestamos => this.dataSource.data = prestamos
     });
 
-
-}  
+} 
 
 onCleanFilter(): void {
   this.filterGame = null;
@@ -86,27 +81,31 @@ onCleanFilter(): void {
 }
 
 onSearch(): void {
-  
+
   let gameId = this.filterGame != null ? this.filterGame.id : null;
   let clientId = this.filterClient != null ? this.filterClient.id : null;
   let fechaInicio = this.filterFechaInicio;
   let fechaFin = this.filterFechaFin;
+  
+
   let pageable : Pageable =  {
-    pageNumber: this.pageNumber,
-    pageSize: this.pageSize,
-    sort: [{
-        property: 'id',
-        direction: 'ASC'
-    }]
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize,
+      sort: [{
+          property: 'id',
+          direction: 'ASC'
+      }]
   }
 
-
-  this.prestamoService.getPrestamos(pageable, gameId, clientId, fechaInicio, fechaFin).subscribe(data => {
+  this.prestamoService.getPrestamos(pageable,gameId, clientId,fechaInicio, fechaFin).subscribe(data => {
       this.dataSource.data = data.content;
       this.pageNumber = data.pageable.pageNumber;
       this.pageSize = data.pageable.pageSize;
       this.totalElements = data.totalElements;
-    });
+  });
+
+
+  
 }
 
 

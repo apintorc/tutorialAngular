@@ -16,11 +16,7 @@ export class PrestamoService {
   constructor(
     private http: HttpClient
   ) { }
-
-
   getPrestamos(pageable: Pageable, idGame?: number, clientId?: number, fechaInicio?: Date, fechaFin?: Date): Observable<PrestamoPage> {
-    //return of(PRESTAMO_DATA);
-    //return this.http.post<AuthorPage>('http://localhost:8080/author', {pageable:pageable});
     return this.http.post<PrestamoPage>(this.composeFindUrl(idGame, clientId, fechaInicio, fechaFin),{pageable:pageable});
   }
 
@@ -35,16 +31,15 @@ export class PrestamoService {
     return this.http.delete<void>(url+idPrestamo);
   }
 
-  // getAllPrestamos(): Observable<Prestamo[]> {
-  //   return of(PRESTAMO_DATA);
-  // }
+  getAllPrestamos(): Observable<Prestamo[]> {
+    return this.http.get<Prestamo[]>('http://localhost:8080/prestamo');
+  }
 
-  
+
   private composeFindUrl(gameId?: number, clientId?: number, fechaInicio?: Date, fechaFin?: Date) : string {
     let params = '';
 
     if (gameId != null) {
-        //params += 'title='+title;
         if (params != '') params += "&";
         params += "gameId="+gameId;
     }
@@ -70,5 +65,6 @@ export class PrestamoService {
     if (params == '') return url;
     else return url + '?'+params;
 }
+
 
 }
