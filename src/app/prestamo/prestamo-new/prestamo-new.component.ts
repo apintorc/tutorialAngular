@@ -18,7 +18,9 @@ export class PrestamoNewComponent implements OnInit {
     prestamo: Prestamo; 
     clients: Client[];
     games: Game[];
-
+    tiempoExcedido: Boolean;
+    fechaInicioSuperior: Boolean;
+    
     constructor(
         public dialogRef: MatDialogRef<PrestamoNewComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -57,11 +59,25 @@ export class PrestamoNewComponent implements OnInit {
       );
     }
 
+
     onSave() {
-        this.prestamoService.savePrestamo(this.prestamo).subscribe(result => {
-            this.dialogRef.close();
-        });    
-    }  
+        let diferenciaFechas = new Date(this.prestamo.fechaFin).getTime() - new Date(this.prestamo.fechaInicio).getTime();
+        var milisegundosDia = 86400000;
+        var diasPrestamo = diferenciaFechas / milisegundosDia;
+        if (diasPrestamo>14){
+            this.tiempoExcedido = true;
+        }else if(diferenciaFechas<0){
+            this.fechaInicioSuperior = true;
+        }else{
+            this.prestamoService.savePrestamo(this.prestamo).subscribe(result => {
+                this.dialogRef.close();
+            });  
+        }
+
+    }
+        
+ 
+    
 
     onClose() {
         this.dialogRef.close();

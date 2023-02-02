@@ -5,7 +5,7 @@ import { Prestamo } from './model/Prestamo';
 import { Pageable } from '../core/model/page/Pageable';
 // import { PRESTAMO_DATA } from './model/mock-prestamos';
 import { PrestamoPage } from './model/PrestamoPage';
-
+import { DatePipe } from '@angular/common'
 
 
 @Injectable({
@@ -14,10 +14,11 @@ import { PrestamoPage } from './model/PrestamoPage';
 export class PrestamoService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    public datepipe: DatePipe
   ) { }
-  getPrestamos(pageable: Pageable, idGame?: number, clientId?: number, fechaInicio?: Date, fechaFin?: Date): Observable<PrestamoPage> {
-    return this.http.post<PrestamoPage>(this.composeFindUrl(idGame, clientId, fechaInicio, fechaFin),{pageable:pageable});
+  getPrestamos(pageable: Pageable, idGame?: number, clientId?: number, fecha?: Date): Observable<PrestamoPage> {
+    return this.http.post<PrestamoPage>(this.composeFindUrl(idGame, clientId, fecha),{pageable:pageable});
   }
 
   savePrestamo(prestamo: Prestamo): Observable<void> {
@@ -36,7 +37,7 @@ export class PrestamoService {
   }
 
 
-  private composeFindUrl(gameId?: number, clientId?: number, fechaInicio?: Date, fechaFin?: Date) : string {
+  private composeFindUrl(gameId?: number, clientId?: number, fecha?: Date) : string {
     let params = '';
 
     if (gameId != null) {
@@ -48,16 +49,17 @@ export class PrestamoService {
         if (params != '') params += "&";
         params += "clientId="+clientId;
     }
-
-    if (fechaInicio != null) {
+    
+    if (fecha != null) {
+      let fechaFormateada =this.datepipe.transform(fecha, 'MM-dd-yyyy');
       if (params != '') params += "&";
-      params += "fechaInicio="+fechaInicio;
+      params += "fecha="+fechaFormateada;
     }
 
-    if (fechaFin != null) {
-      if (params != '') params += "&";
-      params += "fechaFin="+fechaFin;
-    }
+    // if (fechaFin != null) {
+    //   if (params != '') params += "&";
+    //   params += "fechaFin="+fechaFin;
+    // }
   
 
     let url = 'http://localhost:8080/prestamo'

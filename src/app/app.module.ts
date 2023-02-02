@@ -10,6 +10,10 @@ import { AuthorModule } from './author/author.module';
 import { GameModule } from './game/game.module';
 import { ClientModule } from './client/client.module';
 import { PrestamoModule } from './prestamo/prestamo.module';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
+
+import { DatePipe } from '@angular/common'
+
 
 @NgModule({
   declarations: [
@@ -24,9 +28,13 @@ import { PrestamoModule } from './prestamo/prestamo.module';
     GameModule,
     ClientModule,
     PrestamoModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatNativeDateModule,
+    DatePipe 
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

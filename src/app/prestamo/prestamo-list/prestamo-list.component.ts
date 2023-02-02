@@ -11,10 +11,15 @@ import { Game } from 'src/app/game/model/Game';
 import { Client } from 'src/app/client/model/Client';
 import { GameService } from 'src/app/game/game.service';
 import { ClientService } from 'src/app/client/client.service';
+
+
 @Component({
   selector: 'app-prestamo-list',
   templateUrl: './prestamo-list.component.html',
-  styleUrls: ['./prestamo-list.component.scss']
+  styleUrls: ['./prestamo-list.component.scss'],
+  providers: [
+
+  ]
 })
 export class PrestamoListComponent {
   games : Game[];
@@ -26,8 +31,8 @@ export class PrestamoListComponent {
   displayedColumns: string[] = ['id', 'namegame', 'nameclient', 'fechaInicio', 'fechaFin', 'action'];
   filterGame: Game;
   filterClient: Client;
-  filterFechaInicio: Date;
-  filterFechaFin: Date;
+  filterFecha: Date;
+  //filterFechaFin: Date;
 
   constructor(
     private prestamoService: PrestamoService,
@@ -74,20 +79,18 @@ export class PrestamoListComponent {
 onCleanFilter(): void {
   this.filterGame = null;
   this.filterClient = null;
-  this.filterFechaInicio = null;
-  this.filterFechaFin = null;
-
+  this.filterFecha = null;
+  //this.filterFechaFin = null;
+  
   this.onSearch();
 }
 
 onSearch(): void {
-
   let gameId = this.filterGame != null ? this.filterGame.id : null;
   let clientId = this.filterClient != null ? this.filterClient.id : null;
-  let fechaInicio = this.filterFechaInicio;
-  let fechaFin = this.filterFechaFin;
+  let fecha = this.filterFecha;
   
-
+  
   let pageable : Pageable =  {
       pageNumber: this.pageNumber,
       pageSize: this.pageSize,
@@ -96,8 +99,9 @@ onSearch(): void {
           direction: 'ASC'
       }]
   }
-
-  this.prestamoService.getPrestamos(pageable,gameId, clientId,fechaInicio, fechaFin).subscribe(data => {
+  //console.log(moment(this.filterFecha).c);
+  
+  this.prestamoService.getPrestamos(pageable,gameId, clientId,fecha).subscribe(data => {
       this.dataSource.data = data.content;
       this.pageNumber = data.pageable.pageNumber;
       this.pageSize = data.pageable.pageSize;

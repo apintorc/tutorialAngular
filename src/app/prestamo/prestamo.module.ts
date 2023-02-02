@@ -13,6 +13,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import { MatCardModule } from '@angular/material/card';
     MatOptionModule,
     MatSelectModule,
     MatCardModule,
-    
+    MatDatepickerModule,
+    DatePipe
   ]
 })
 export class PrestamoModule { }

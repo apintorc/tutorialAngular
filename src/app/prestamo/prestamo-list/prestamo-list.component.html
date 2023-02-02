@@ -17,15 +17,22 @@
                 </mat-select>
             </mat-form-field>   
             
-            <mat-form-field>
-                <mat-label>Fecha Inicio</mat-label>
-                <input type="date" matInput placeholder="Inicio del préstamo" [(ngModel)]="filterFechaInicio" name="fechaInicio">
+            <mat-form-field appearance="fill">
+                <mat-label>Fecha del préstamo</mat-label>
+                <input type="date" matInput placeholder="Fecha del préstamo" [(ngModel)]="filterFecha" name="fecha" [matDatepicker]="picker">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <!--<input type="date" matInput placeholder="Fecha del préstamo" [(ngModel)]="filterFecha" name="fecha">-->
             </mat-form-field>
+            
+            <p *ngIf="filterFecha">
+                Fecha elegida: (yyyy-MM-dd) {{filterFecha | date: 'yyyy-MM-dd'}}
+              </p>
 
-            <mat-form-field>
+            <!-- <mat-form-field>
                 <mat-label>Fecha Fin</mat-label>
                 <input type="date" matInput placeholder="Fin del préstamo" [(ngModel)]="filterFechaFin" name="fechaFin">
-            </mat-form-field>
+            </mat-form-field> -->
 
         </form>
 

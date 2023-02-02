@@ -1,7 +1,9 @@
 <div class="container">
     <h1>Crear préstamo</h1>
-
+    <mat-error *ngIf="tiempoExcedido">El tiempo de préstamo es de 14 días como máximo</mat-error>
+    <mat-error *ngIf="fechaInicioSuperior">La fecha de inicio no puede ser superior a la de fin</mat-error>
     <form>
+        <!--<span>{{error}}</span>-->
         <mat-form-field>
             <mat-label>Identificador</mat-label>
             <input type="number" matInput placeholder="Identificador" [(ngModel)]="prestamo.id" name="id" disabled>
@@ -25,7 +27,7 @@
 
         <mat-form-field>
             <mat-label>Fecha de inicio</mat-label>
-            <input type="date" matInput placeholder="Fecha de inicio" [(ngModel)]="prestamo.fechaInicio" name="fechaInicio" required>
+            <input type="date" matInput placeholder="Fecha de inicio" [(ngModel)]="prestamo.fechaInicio" required name="fechaInicio" required>
             <mat-error>La fecha de inicio del préstamo no puede estar vacía</mat-error>
         </mat-form-field>
 
