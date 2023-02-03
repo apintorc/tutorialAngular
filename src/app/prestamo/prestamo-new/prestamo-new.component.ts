@@ -20,7 +20,9 @@ export class PrestamoNewComponent implements OnInit {
     games: Game[];
     tiempoExcedido: Boolean;
     fechaInicioSuperior: Boolean;
-    
+    juegoReservadoCliente: Boolean;
+    clienteReservaJuego: Boolean;
+
     constructor(
         public dialogRef: MatDialogRef<PrestamoNewComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -61,14 +63,36 @@ export class PrestamoNewComponent implements OnInit {
 
 
     onSave() {
+        //El mismo juego no puede estar prestado a dos clientes distintos en un mismo día
+        this.prestamoService.juegoReservado(this.prestamo.game.id, this.prestamo.fechaInicio, this.prestamo.fechaFin).subscribe(result => {
+            if (result){
+                this.juegoReservadoCliente = true;
+                
+            }else{
+                this.juegoReservadoCliente = false;
+            }
+        })
+        //Un mismo cliente no puede tener prestados más de 2 juegos en un mismo día. 
+        this.prestamoService.clienteReserva(this.prestamo.client.id, this.prestamo.fechaInicio, this.prestamo.fechaFin).subscribe(result => {
+            if (result){
+                this.clienteReservaJuego = true;
+                
+            }else{
+                this.clienteReservaJuego = false;
+            }
+        })
+
         let diferenciaFechas = new Date(this.prestamo.fechaFin).getTime() - new Date(this.prestamo.fechaInicio).getTime();
         var milisegundosDia = 86400000;
         var diasPrestamo = diferenciaFechas / milisegundosDia;
+        //El periodo de préstamo máximo solo podrá ser de 14 días
         if (diasPrestamo>14){
             this.tiempoExcedido = true;
+        // La fecha de fin NO podrá ser anterior a la fecha de inicio//
         }else if(diferenciaFechas<0){
             this.fechaInicioSuperior = true;
-        }else{
+            this.tiempoExcedido = false;
+        }else if (this.juegoReservadoCliente == false && this.clienteReservaJuego==false){
             this.prestamoService.savePrestamo(this.prestamo).subscribe(result => {
                 this.dialogRef.close();
             });  

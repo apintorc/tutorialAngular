@@ -2,6 +2,8 @@
     <h1>Crear préstamo</h1>
     <mat-error *ngIf="tiempoExcedido">El tiempo de préstamo es de 14 días como máximo</mat-error>
     <mat-error *ngIf="fechaInicioSuperior">La fecha de inicio no puede ser superior a la de fin</mat-error>
+    <mat-error *ngIf="juegoReservadoCliente">El mismo juego no puede estar prestado a dos clientes distintos en un mismo día</mat-error>
+    <mat-error *ngIf="clienteReservaJuego">Un mismo cliente no puede tener prestados más de 2 juegos en un mismo día.</mat-error>
     <form>
         <!--<span>{{error}}</span>-->
         <mat-form-field>
@@ -33,13 +35,13 @@
 
         <mat-form-field>
             <mat-label>Fecha de fin</mat-label>
-            <input type="date" matInput placeholder="Fecha de fin" [(ngModel)]="prestamo.fechaFin" name="fechaFin" required>
+            <input type="date" matInput placeholder="Fecha de fin" [(ngModel)]="prestamo.fechaFin"  name="fechaFin" required>
             <mat-error>La fecha de fin del préstamo no puede estar vacía</mat-error>
         </mat-form-field>
     </form>
 
     <div class="buttons">
         <button mat-stroked-button (click)="onClose()">Cerrar</button>
-        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+        <button mat-flat-button color="primary" (click)=" onSave()"  required>Guardar</button>
     </div>
 </div>

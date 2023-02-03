@@ -36,6 +36,15 @@ export class PrestamoService {
     return this.http.get<Prestamo[]>('http://localhost:8080/prestamo');
   }
 
+  juegoReservado(idGame: number, fechaInicio: Date, fechaFin: Date) :Observable<Boolean>{
+    return this.http.get<Boolean>(this.composeFindUrl2(idGame,fechaInicio,fechaFin));
+    
+  }
+
+  clienteReserva(idClient: number, fechaInicio: Date, fechaFin: Date) :Observable<Boolean>{
+    return this.http.get<Boolean>(this.composeFindUrl3(idClient,fechaInicio,fechaFin));
+    
+  }
 
   private composeFindUrl(gameId?: number, clientId?: number, fecha?: Date) : string {
     let params = '';
@@ -56,17 +65,52 @@ export class PrestamoService {
       params += "fecha="+fechaFormateada;
     }
 
-    // if (fechaFin != null) {
-    //   if (params != '') params += "&";
-    //   params += "fechaFin="+fechaFin;
-    // }
-  
-
     let url = 'http://localhost:8080/prestamo'
 
     if (params == '') return url;
     else return url + '?'+params;
 }
+
+
+  private composeFindUrl2(gameId: number, fechaInicio: Date, fechaFin: Date) : string {
+    let params = '';
+
+      if (params != '') params += "&";
+      params += "gameId="+gameId;
+    
+      let fechaInicioFormateada =this.datepipe.transform(fechaInicio, 'MM-dd-yyyy');
+      if (params != '') params += "&";
+      params += "fechaInicio="+fechaInicioFormateada;
+
+      let fechaFinFormateada =this.datepipe.transform(fechaFin, 'MM-dd-yyyy');
+      if (params != '') params += "&";
+      params += "fechaFin="+fechaFinFormateada;
+
+
+    let url = 'http://localhost:8080/prestamo/juego-reservado'
+
+    return url + '?'+params;
+  }
+
+  private composeFindUrl3(clientId: number, fechaInicio: Date, fechaFin: Date) : string {
+    let params = '';
+
+      if (params != '') params += "&";
+      params += "clientId="+clientId;
+    
+      let fechaInicioFormateada =this.datepipe.transform(fechaInicio, 'MM-dd-yyyy');
+      if (params != '') params += "&";
+      params += "fechaInicio="+fechaInicioFormateada;
+
+      let fechaFinFormateada =this.datepipe.transform(fechaFin, 'MM-dd-yyyy');
+      if (params != '') params += "&";
+      params += "fechaFin="+fechaFinFormateada;
+
+
+    let url = 'http://localhost:8080/prestamo/cliente-reserva'
+
+    return url + '?'+params;
+  }
 
 
 }
